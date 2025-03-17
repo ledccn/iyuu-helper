@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "name": "IYUU浏览器助手",
+  "description": "IYUU浏览器助手，简称IYUU助手；是安装在谷歌浏览器上的一个插件，用于抓取站点Cookie和配置信息，简化您的操作。",
+  "author": {
+    "email": "367013672@qq.com"
+  },
+  "homepage_url": "https://iyuu.cn",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "action-popup/index.html"
+  },
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "side-panel/index.html"
+  },
+  "options_page": "options-page/index.html",
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "js": [
+        "assets/jquery.min.js",
+        "assets/functions.js",
+        "content_scripts.js"
+      ],
+      "all_frames": false,
+      "matches": [
+        "*://*/*"
+      ],
+      "exclude_matches": [],
+      "include_globs": [],
+      "exclude_globs": [],
+      "css": []
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "assets/jquery.min.js",
+        "assets/module/*",
+        "assets/logo.png"
+      ],
+      "use_dynamic_url": false
+    }
+  ],
+  "icons": {
+    "16": "assets/logo.png",
+    "24": "assets/logo.png",
+    "32": "assets/logo.png",
+    "128": "assets/logo.png"
+  },
+  "permissions": [
+    "cookies",
+    "storage",
+    "alarms",
+    "tabs",
+    "activeTab",
+    "sidePanel",
+    "scripting",
+    "devtools",
+    "clipboardRead",
+    "contextMenus",
+    "notifications",
+    "background",
+    "webRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "offline_enabled": true,
+  "content_security_policy": {
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+  },
+  "sandbox": {
+    "pages": [
+      "options-page/index.html"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+body {
+    min-width: 750px;
+    min-height: 230px;
+}
+
+.layui-table thead th {
+    text-align: center;
+}
+
+.layui-table tbody tr {
+    text-align: center;
+}
+
+.index {
+    width: 50px;
+}
+
+.site {
+    width: 120px;
+}
+
+.status {
+    width: 80px;
+}
+
+.action {
+    width: 150px;
+}
