@@ -13,41 +13,12 @@ layui.use(['jquery', 'layer', 'element', 'form'], function () {
 
     // 给表单初始化数据
     Api.getConfig().then((config) => {
+        form.val('setting_filter', config || {});
         if (config && config.iyuu_helper_server) {
             console.log('iyuu_helper_server', new URL(config.iyuu_helper_server));
         } else {
             element.tabChange('action_popup', 'settings');
         }
-
-        layui.each(config, function (key, value) {
-            if ('options' === key && value) {
-                layui.each(value, function (kk, vv) {
-                    try {
-                        // 数组（复选框）
-                        if (Array.isArray(vv)) {
-                            //init_element_attr_value('*[name="options[' + kk + '][]"]', vv)
-                            return;
-                        }
-
-                        // 对象(输入框、选择框、单选框、复选框等)
-                        if ('Object' === Object.prototype.toString.call(vv).slice(8, -1)) {
-                            layui.each(vv, function (kkk, vvv) {
-                                init_element_attr_value($, '*[name="options[' + kk + '][' + kkk + ']"]', vvv)
-                            });
-                            return;
-                        }
-                    } catch (e) {
-                        console.error(e)
-                        return;
-                    }
-
-                    // 基础类型(输入框、选择框、单选框)
-                    init_element_attr_value($, '*[name="options[' + kk + ']"]', vv)
-                });
-            } else {
-                init_element_attr_value($, '*[name="' + key + '"]', value)
-            }
-        });
     });
 
     // 提交事件
