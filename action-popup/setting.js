@@ -5,8 +5,7 @@ Utils.delayResolve(chrome.runtime.getPlatformInfo(), 10000).then((platform) => {
     console.log('platform', platform);
 });
 
-layui.use(['jquery', 'layer', 'element', 'form'], function () {
-    let $ = layui.jquery;
+layui.use(['layer', 'element', 'form'], function () {
     let layer = layui.layer;
     let element = layui.element;
     let form = layui.form;
