@@ -3,23 +3,13 @@ import Helper from "/assets/module/helper.js";
 import Command from '/assets/module/command.js';
 import Response from '/assets/module/response.js';
 import Config from '/assets/module/sites/config.js';
-import Utils from '/assets/module/utils.js';
-import Status from '/assets/module/status.js';
 import Storage from '/assets/module/storage.js';
 
-console.log('import action-popup/popup.js');
-
-Utils.delayResolve(chrome.runtime.getPlatformInfo(), 10000).then((platform) => {
-    console.log('platform', platform);
-});
-
-const action_popup = 'action_popup';
-layui.use(['layer', 'jquery', 'util', 'element', 'form'], function () {
-    let layer = layui.layer;
+layui.use(['jquery', 'layer', 'util', 'element'], function () {
     let $ = layui.jquery;
+    let layer = layui.layer;
     let util = layui.util;
     let element = layui.element;
-    let form = layui.form;
 
     //layer.msg('popup.js');
     console.log('popup.js', $(window).width(), $(window).height());
@@ -103,7 +93,7 @@ layui.use(['layer', 'jquery', 'util', 'element', 'form'], function () {
                     title: '请求异常'
                 }, function (index) {
                     layer.close(index);
-                    element.tabChange(action_popup, 'settings');
+                    element.tabChange('action_popup', 'settings');
                 });
             });
         },
@@ -112,93 +102,8 @@ layui.use(['layer', 'jquery', 'util', 'element', 'form'], function () {
                 download_json_file(config, 'iyuu_helper_config.json');
             });
         },
-    });
-
-    // 初始化站点表单
-    Config.allSites().then(async (sites) => {
-        let status = null;
-        try {
-            status = (await Status.make().get()) || {};
-        } catch (e) {
-            status = {};
-        }
-
-        const rows = [];
-        for (let [index, site] of sites.entries()) {
-            let state = status[site.site] || false;
-            rows.push(`<tr>
-                        <td>${index + 1}</td>
-                        <td>${site.site}</td>
-                        <td>${site.nickname}</td>
-                        <td>
-                            <i class="layui-icon ${site.cookie ? 'layui-icon-ok layui-font-green' : 'layui-icon-clear layui-font-red'}"></i>
-                        </td>
-                        <td>
-                            <i class="layui-icon layui-icon-username ${state ? 'layui-font-green' : 'layui-font-red'}"></i>
-                        </td>
-                        <td>
-                            <button type="button" class="layui-btn layui-btn-xs layui-bg-purple" lay-on="createSiteTab"
-                        data-site="${site.site}"><i class="layui-icon layui-icon-refresh"></i>刷新
-                            </button>
-                            <button type="button" class="layui-btn layui-btn-xs layui-btn-primary layui-border-purple" lay-on="openSite"
-                        data-site="${site.site}"><i class="layui-icon layui-icon-website"></i>访问
-                            </button>
-                        </td>
-                    </tr>`);
-        }
-
-        document.getElementById('sites_tbody').innerHTML = rows.join('');
-    });
-
-    // 给表单初始化数据
-    Api.getConfig().then((config) => {
-        if (config && config.iyuu_helper_server) {
-            console.log('iyuu_helper_server', new URL(config.iyuu_helper_server));
-        } else {
-            element.tabChange(action_popup, 'settings');
-        }
-
-        layui.each(config, function (key, value) {
-            if ('options' === key && value) {
-                layui.each(value, function (kk, vv) {
-                    try {
-                        // 数组（复选框）
-                        if (Array.isArray(vv)) {
-                            //init_element_attr_value('*[name="options[' + kk + '][]"]', vv)
-                            return;
-                        }
-
-                        // 对象(输入框、选择框、单选框、复选框等)
-                        if ('Object' === Object.prototype.toString.call(vv).slice(8, -1)) {
-                            layui.each(vv, function (kkk, vvv) {
-                                init_element_attr_value($, '*[name="options[' + kk + '][' + kkk + ']"]', vvv)
-                            });
-                            return;
-                        }
-                    } catch (e) {
-                        console.error(e)
-                        return;
-                    }
-
-                    // 基础类型(输入框、选择框、单选框)
-                    init_element_attr_value($, '*[name="options[' + kk + ']"]', vv)
-                });
-            } else {
-                init_element_attr_value($, '*[name="' + key + '"]', value)
-            }
-        });
-    });
-
-    // 提交事件
-    form.on('submit(save_config)', function (data) {
-        const field = data.field; // 获取表单字段值
-        Api.setConfig(field).then(() => {
-            layer.alert('已存入 chrome.storage.local', {
-                title: '保存成功'
-            });
-        });
-
-        // 阻止默认 form 跳转
-        return false;
+        recoveryConfig: function () {
+            return false;
+        },
     });
 });

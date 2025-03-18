@@ -21,8 +21,11 @@
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-orange" lay-on="reload">
                     重载插件
                 </button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue" lay-on="openPopup">打开Popup</button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple" lay-on="refreshAll">
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue" lay-on="openPopup">
+                    打开Popup
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple"
+                        lay-on="refreshAll">
                     刷新全部
                 </button>
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue" lay-on="getRequest">
@@ -52,10 +55,26 @@
                 </table>
             </div>
             <div class="layui-tab-item">
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue" lay-on="updatePopup">切换Popup</button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple" lay-on="openOptionsPage">扩展选项</button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-red" lay-on="clear">清理缓存</button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-red" lay-on="createTab">爱语飞飞</button>
+                <form class="layui-hide">
+                    <label for="upload_sites_json_file">选择文件:</label>
+                    <input type="file" name="file" accept="application/json" id="upload_sites_json_file">
+                </form>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" id="upload_sites_json">
+                    <i class="layui-icon layui-icon-upload"></i>
+                    上传文件
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue"
+                        lay-on="updatePopup">切换Popup
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple"
+                        lay-on="openOptionsPage">扩展选项
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-red" lay-on="clear">
+                    清理缓存
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-red" lay-on="createTab">
+                    爱语飞飞
+                </button>
             </div>
             <div class="layui-tab-item">
                 <form class="layui-form" action="">
@@ -77,13 +96,13 @@
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button type="submit" class="layui-btn layui-btn-sm" lay-submit lay-filter="save_config">立即提交
+                            <button type="submit" class="layui-btn layui-btn-sm" lay-submit lay-filter="save_config">
+                                立即提交
                             </button>
-                            <button type="submit" class="layui-btn layui-btn-sm layui-bg-blue" lay-filter="backup_config" lay-on="backupConfig">备份
+                            <button type="button" class="layui-btn layui-btn-sm layui-bg-blue" lay-on="backupConfig">备份
                             </button>
-<!--                            <button type="submit" class="layui-btn layui-btn-sm" lay-filter="recovery_config" lay-on="recoveryConfig">恢复-->
-<!--                            </button>-->
-                            <!--<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>-->
+                            <button type="button" class="layui-btn layui-btn-sm" lay-on="recoveryConfig">恢复
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -95,5 +114,8 @@
 <script src="/assets/layui/layui.js"></script>
 <script src="/assets/functions.js"></script>
 <script src="popup.js" type="module"></script>
+<script src="setting.js" type="module"></script>
+<script src="table.js" type="module"></script>
+<script src="upload.js" type="module"></script>
 </body>
 </html>
