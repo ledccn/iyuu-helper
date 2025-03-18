@@ -147,7 +147,7 @@ function getLinkHrefByDocument(dom, regex, index = null) {
  * 获取包含关键字的 Dom 节点
  * @param {string} keyword
  * @param {string} selector
- * @returns {HTMLElement|null}
+ * @returns {HTMLElement}
  */
 function getElementByKeyword(keyword, selector = 'td') {
     let list = document.querySelectorAll(selector);
