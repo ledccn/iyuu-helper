@@ -66,10 +66,6 @@ function injectCustomJs(jsPath) {
  */
 function get_fields_passkey(keyword) {
     const targetTd = getElementByKeyword(keyword);
-    if (!targetTd) {
-        throw new Error('无法获取到密钥关键字');
-    }
-
     // 获取下一个 td 元素
     const nextTd = targetTd.nextElementSibling;
     if (!nextTd || nextTd.tagName.toLowerCase() !== 'td') {
@@ -171,5 +167,5 @@ function getElementByKeyword(keyword, selector = 'td') {
             return target;
         }
     }
-    return null;
+    throw new Error(`获取失败，未找到包含 ${keyword} 关键字的HTMLElement节点`)
 }

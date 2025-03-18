@@ -37,9 +37,6 @@ class DriverHhanclub extends Sites {
      */
     async chainFieldsPasskey() {
         const dom = getElementByKeyword('密钥', 'span');
-        if (!dom) {
-            throw new Error('无法获取到密钥关键字')
-        }
         const value = dom.nextElementSibling.textContent.match(/[a-zA-Z0-9]+/);
         if (!value) {
             throw new Error('无法获取到密钥')
