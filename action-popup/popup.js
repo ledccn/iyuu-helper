@@ -97,13 +97,5 @@ layui.use(['jquery', 'layer', 'util', 'element'], function () {
                 });
             });
         },
-        backupConfig: function () {
-            Api.getConfig().then((config) => {
-                download_json_file(config, 'iyuu_helper_config.json');
-            });
-        },
-        recoveryConfig: function () {
-            return false;
-        },
     });
 });
