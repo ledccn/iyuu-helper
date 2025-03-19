@@ -11,19 +11,6 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
     let form = layui.form;
     let util = layui.util;
 
-    const fileInput = document.getElementById('recoveryConfig');
-    util.on({
-        backupConfig: function () {
-            Api.getConfig().then((config) => {
-                download_json_file(config, 'iyuu_helper_config.json');
-            });
-        },
-        recoveryConfig: function () {
-            fileInput.click();
-            return false;
-        },
-    });
-
     // 给表单初始化数据
     Api.getConfig().then((config) => {
         form.val('setting_filter', config || {});
@@ -45,6 +32,23 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
 
         // 阻止默认 form 跳转
         return false;
+    });
+
+    /**
+     * 下载 JSON 文件
+     * @type {HTMLElement}
+     */
+    const fileInput = document.getElementById('recoveryConfig');
+    util.on({
+        backupConfig: function () {
+            Api.getConfig().then((config) => {
+                download_json_file(config, 'iyuu_helper_config.json');
+            });
+        },
+        recoveryConfig: function () {
+            fileInput.click();
+            return false;
+        },
     });
 
     /**
