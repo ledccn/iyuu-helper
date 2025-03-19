@@ -11,6 +11,10 @@ body {
     text-align: center;
 }
 
+.layui-tab .layui-tab-title li {
+    font-size: 18px !important;
+}
+
 .index {
     width: 50px;
 }
