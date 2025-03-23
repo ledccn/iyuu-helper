@@ -1,5 +1,7 @@
+import Api from '/assets/module/api.js';
 import Config from '/assets/module/sites/config.js';
 import Command from '/assets/module/command.js';
+import Cookies from "/assets/module/cookies.js";
 import Helper from "/assets/module/helper.js";
 import Response from '/assets/module/response.js';
 import Sessions from "/assets/module/sessions.js";
@@ -41,14 +43,22 @@ chrome.runtime.onMessage.addListener(
                     sendResponse(Response.fail(request.action + '未找到任务上下文'));
                 }
                 break;
-            // 关闭标签页，删除Session
-            case Command.removeSiteTab:
-                Helper.removeTab(tabId).then(() => {
-                    console.log('关闭标签')
-                });
-                break;
             // 完成抓取：汇报结果、关闭标签页
             case Command.doneSiteTab:
+                if (tabId && context.has(tabId)) {
+                    postSiteConfig(request.site, request.data).then((data) => {
+                        console.log('汇报结果', data);
+                    }).catch((error) => {
+                        console.log('汇报结果失败', error);
+                    }).finally(() => {
+                        Helper.removeTab(tabId).then(() => {
+                            console.log('关闭标签')
+                        });
+                    });
+                }
+                break;
+            // 关闭标签页，删除Session
+            case Command.removeSiteTab:
                 Helper.removeTab(tabId).then(() => {
                     console.log('关闭标签')
                 });
@@ -73,7 +83,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 /**
- * 定时调度
+ * 定时调度待抓取的站点
  */
 setInterval(() => {
     if (0 < context.lengthQueue() && context.getTabToSite().size < 5) {
@@ -109,4 +119,22 @@ async function createSiteTab(site, context) {
     }, 120000, tab.id);
     console.log('上下文对象', context);
     return tab;
+}
+
+/**
+ * 汇报结果
+ * @param {string} site
+ * @param {object} options
+ * @returns {Promise<object>}
+ */
+async function postSiteConfig(site, options) {
+    const config = await Config.make(site);
+    const cookie = await Cookies.make(site).get();
+    const params = {
+        sid: config.sid,
+        site: site,
+        cookie: cookie,
+        options: options,
+    };
+    return await Api.postRequest(params);
 }
