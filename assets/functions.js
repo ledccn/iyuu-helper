@@ -169,3 +169,22 @@ function getElementByKeyword(keyword, selector = 'td') {
     }
     throw new Error(`获取失败，未找到包含 ${keyword} 关键字的HTMLElement节点`)
 }
+
+/**
+ * 显示与隐藏密码
+ * @param {string} inputId
+ * @param {string} showPasswordId
+ */
+function togglePassword(inputId = 'x-iyuu-helper', showPasswordId = 'showPassword') {
+    const input = document.getElementById(inputId);
+    const showPassword = document.getElementById(showPasswordId);
+    showPassword.addEventListener('click', function () {
+        if (input.type === 'password') {
+            input.type = 'text';
+            showPassword.className = 'layui-icon layui-icon-eye';
+        } else {
+            input.type = 'password';
+            showPassword.className = 'layui-icon layui-icon-eye-invisible';
+        }
+    });
+}

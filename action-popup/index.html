@@ -79,19 +79,22 @@
             <div class="layui-tab-item">
                 <form class="layui-form" action="" lay-filter="setting_filter">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">助手地址</label>
+                        <label class="layui-form-label" for="iyuu_helper_server">助手地址</label>
                         <div class="layui-input-block">
                             <input type="text" name="iyuu_helper_server" placeholder="请输入IYUU助手服务器地址"
                                    autocomplete="off"
-                                   class="layui-input">
+                                   class="layui-input" id="iyuu_helper_server">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">助手密钥</label>
+                        <label class="layui-form-label" for="x-iyuu-helper">助手密钥</label>
                         <div class="layui-input-block">
                             <input type="password" name="x-iyuu-helper" placeholder="请输入IYUU助手服务器密钥"
-                                   autocomplete="off" lay-affix="eye"
-                                   class="layui-input">
+                                   autocomplete="off"
+                                   class="layui-input" id="x-iyuu-helper">
+                            <div class="layui-input-affix layui-input-suffix">
+                                <i class="layui-icon layui-icon-eye-invisible" id="showPassword"></i>
+                            </div>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -102,7 +105,7 @@
                             <button type="button" class="layui-btn layui-btn-sm layui-bg-blue" lay-on="backupConfig">
                                 <i class="layui-icon layui-icon-export"></i> 备份设置
                             </button>
-                            <button type="button" class="layui-btn layui-btn-sm" lay-on="recoveryConfig">
+                            <button type="button" class="layui-btn layui-btn-sm" lay-on="recoveryConfig" title="请选择一个 JSON 文件进行上传">
                                 <i class="layui-icon layui-icon-upload"></i> 恢复设置
                             </button>
                         </div>

@@ -10,6 +10,7 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
     let element = layui.element;
     let form = layui.form;
     let util = layui.util;
+    togglePassword();
 
     // 给表单初始化数据
     Api.getConfig().then((config) => {
