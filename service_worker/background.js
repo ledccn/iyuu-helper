@@ -45,7 +45,8 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         console.log(
             '监听存储库更改',
             `Storage key "${key}" in namespace "${namespace}" changed.`,
-            `旧值 "${oldValue}" | 新值 "${newValue}".`
+            ' | 旧值：', oldValue,
+            ' | 新值：', newValue
         );
     }
 });
