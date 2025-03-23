@@ -20,9 +20,20 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
     // 提交事件
     form.on('submit(save_config)', function (data) {
         const field = data.field; // 获取表单字段值
+        // 解析密钥与地址：如果URL参数内包含密钥，则提取密钥；分开保存。
+        const SPLITTER = '?x-iyuu-helper=';
+        const iyuu_helper_server = field['iyuu_helper_server'] || '';
+        if (iyuu_helper_server && iyuu_helper_server.includes(SPLITTER)) {
+            const [url, x_iyuu_helper] = iyuu_helper_server.split(SPLITTER);
+            field['iyuu_helper_server'] = url;
+            field['x-iyuu-helper'] = x_iyuu_helper || field['x-iyuu-helper'] || '';
+        }
         Api.setConfig(field).then(() => {
             layer.alert('已存入 chrome.storage.local', {
                 title: '保存成功'
+            }, function (index) {
+                layer.close(index);
+                form.val('setting_filter', field || {});
             });
         });
 
