@@ -17,7 +17,7 @@
   "side_panel": {
     "default_path": "side-panel/index.html"
   },
-  "options_page": "options-page/index.html",
+  "options_page": "action-popup/index.html",
   "content_scripts": [
     {
       "run_at": "document_end",
@@ -73,13 +73,5 @@
   "host_permissions": [
     "<all_urls>"
   ],
-  "offline_enabled": true,
-  "content_security_policy": {
-    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
-  },
-  "sandbox": {
-    "pages": [
-      "options-page/index.html"
-    ]
-  }
+  "offline_enabled": true
 }

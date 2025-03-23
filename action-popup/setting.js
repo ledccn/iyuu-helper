@@ -1,9 +1,4 @@
 import Api from '/assets/module/api.js';
-import Utils from '/assets/module/utils.js';
-
-Utils.delayResolve(chrome.runtime.getPlatformInfo(), 10000).then((platform) => {
-    console.log('platform', platform);
-});
 
 layui.use(['layer', 'element', 'form', 'util'], function () {
     let layer = layui.layer;

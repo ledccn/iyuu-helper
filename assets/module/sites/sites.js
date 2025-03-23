@@ -75,7 +75,7 @@ class Sites {
 
     /**
      * 判断缓存的cookie状态
-     * @returns {Promise<boolean|null>}
+     * @returns {Promise<boolean>}
      */
     async isCookieStatus() {
         return Sessions.make(this.getConfig().site).getCookieStatus();
