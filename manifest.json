@@ -43,6 +43,7 @@
       ],
       "resources": [
         "assets/jquery.min.js",
+        "assets/crypto-js-4.2.0/*",
         "assets/module/*",
         "assets/logo.png"
       ],

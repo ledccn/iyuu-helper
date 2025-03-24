@@ -11,6 +11,8 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
     Api.getConfig().then((config) => {
         form.val('setting_filter', config || {});
         if (config && config.iyuu_helper_server) {
+            const message = String(Math.floor(Date.now() / 1000));
+            console.log(message, CryptoJS.HmacMD5(message, config['x-iyuu-helper']).toString().toLowerCase());
             console.log('iyuu_helper_server', new URL(config.iyuu_helper_server));
         } else {
             element.tabChange('action_popup', 'settings');
