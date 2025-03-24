@@ -52,28 +52,33 @@
                 </table>
             </div>
             <div class="layui-tab-item">
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-on="createSiteTab"
-                        data-site="m-team">创建标签
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-primary layui-border"
+                        lay-on="createSiteTab"
+                        data-site="m-team">
+                    <i class="layui-icon layui-icon-website"></i> 创建标签
                 </button>
                 <form class="layui-hide">
                     <label for="upload_sites_json_file">选择文件:</label>
                     <input type="file" name="file" accept="application/json" id="upload_sites_json_file">
                 </form>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" id="upload_sites_json">
-                    <i class="layui-icon layui-icon-upload"></i>
-                    恢复站点
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-primary layui-border"
+                        id="upload_sites_json">
+                    <i class="layui-icon layui-icon-upload"></i> 恢复站点
                 </button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue" lay-on="openPopup">
-                    打开Popup
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-primary layui-border"
+                        lay-on="openPopup">
+                    <i class="layui-icon layui-icon-tabs"></i>  打开Popup
                 </button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue"
-                        lay-on="updatePopup">切换Popup
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-primary layui-border"
+                        lay-on="updatePopup">
+                    <i class="layui-icon layui-icon-set-fill"></i> 切换Popup
                 </button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple" lay-on="createTab">
-                    爱语飞飞
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple"
+                        lay-on="createTab">
+                    <i class="layui-icon layui-icon-home"></i> 爱语飞飞
                 </button>
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-red" lay-on="clear">
-                    清理缓存
+                    <i class="layui-icon layui-icon-delete"></i> 清理缓存
                 </button>
             </div>
             <div class="layui-tab-item">
@@ -102,10 +107,12 @@
                             <button type="submit" class="layui-btn layui-btn-sm" lay-submit lay-filter="save_config">
                                 <i class="layui-icon layui-icon-form"></i> 立即保存
                             </button>
-                            <button type="button" class="layui-btn layui-btn-sm layui-bg-blue" lay-on="backupConfig">
+                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary layui-border-purple"
+                                    lay-on="backupConfig">
                                 <i class="layui-icon layui-icon-export"></i> 备份设置
                             </button>
-                            <button type="button" class="layui-btn layui-btn-sm" lay-on="recoveryConfig" title="请选择一个 JSON 文件进行上传">
+                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary layui-border-purple"
+                                    lay-on="recoveryConfig" title="请选择一个 JSON 文件进行上传">
                                 <i class="layui-icon layui-icon-upload"></i> 恢复设置
                             </button>
                         </div>
