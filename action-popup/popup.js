@@ -5,11 +5,10 @@ import Response from '/assets/module/response.js';
 import Config from '/assets/module/sites/config.js';
 import Storage from '/assets/module/storage.js';
 
-layui.use(['jquery', 'layer', 'util', 'element'], function () {
+layui.use(['jquery', 'layer', 'util'], function () {
     let $ = layui.jquery;
     let layer = layui.layer;
     let util = layui.util;
-    let element = layui.element;
 
     //layer.msg('popup.js');
     console.log('popup.js', $(window).width(), $(window).height());
@@ -69,7 +68,7 @@ layui.use(['jquery', 'layer', 'util', 'element'], function () {
                 console.log('创建站点新标签，响应', response);
             });
         },
-        getRequest: function () {
+        getRequest: () => {
             Api.getRequest().then((res) => {
                 console.log('同步站点', res);
                 const response = new Response(res);
@@ -80,22 +79,22 @@ layui.use(['jquery', 'layer', 'util', 'element'], function () {
                     });
                 } else {
                     console.log('同步站点失败', res);
-                    layer.alert(response.msg || '同步站点失败', {
+                    layer.alert(response.msg || JSON.stringify(res), {
                         icon: 0,
-                        shadeClose: true,
-                        title: '请求错误'
+                        offset: 't',
+                        //shadeClose: true,
+                        title: '请求错误，同步站点失败'
                     });
                 }
             }).catch((error) => {
                 layer.alert(error.message || '同步站点失败', {
-                    icon: 0,
-                    shadeClose: true,
-                    title: '请求异常'
-                }, function (index) {
-                    layer.close(index);
-                    element.tabChange('action_popup', 'settings');
+                    icon: 2,
+                    offset: 't',
+                    //shadeClose: true,
+                    title: '请求异常，同步站点失败'
                 });
             });
+            return false;
         },
     });
 });

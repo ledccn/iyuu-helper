@@ -175,7 +175,7 @@ function getElementByKeyword(keyword, selector = 'td') {
  * @param {string} inputId
  * @param {string} showPasswordId
  */
-function togglePassword(inputId = 'x-iyuu-helper', showPasswordId = 'showPassword') {
+function togglePassword(inputId = 'iyuu_helper_secret', showPasswordId = 'showPassword') {
     const input = document.getElementById(inputId);
     const showPassword = document.getElementById(showPasswordId);
     showPassword.addEventListener('click', function () {

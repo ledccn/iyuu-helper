@@ -11,8 +11,6 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
     Api.getConfig().then((config) => {
         form.val('setting_filter', config || {});
         if (config && config.iyuu_helper_server) {
-            const message = String(Math.floor(Date.now() / 1000));
-            console.log(message, CryptoJS.HmacMD5(message, config['x-iyuu-helper']).toString().toLowerCase());
             console.log('iyuu_helper_server', new URL(config.iyuu_helper_server));
         } else {
             element.tabChange('action_popup', 'settings');
@@ -23,12 +21,12 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
     form.on('submit(save_config)', function (data) {
         const field = data.field; // 获取表单字段值
         // 解析密钥与地址：如果URL参数内包含密钥，则提取密钥；分开保存。
-        const SPLITTER = '?x-iyuu-helper=';
+        const SPLITTER = '?iyuu_helper_secret=';
         const iyuu_helper_server = field['iyuu_helper_server'] || '';
         if (iyuu_helper_server && iyuu_helper_server.includes(SPLITTER)) {
-            const [url, x_iyuu_helper] = iyuu_helper_server.split(SPLITTER);
+            const [url, iyuu_helper_secret] = iyuu_helper_server.split(SPLITTER);
             field['iyuu_helper_server'] = url;
-            field['x-iyuu-helper'] = x_iyuu_helper || field['x-iyuu-helper'] || '';
+            field['iyuu_helper_secret'] = iyuu_helper_secret || field['iyuu_helper_secret'] || '';
         }
         Api.setConfig(field).then(() => {
             layer.alert('已存入 chrome.storage.local', {
@@ -78,7 +76,7 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
                         // 将读取的内容解析为 JSON
                         const jsonData = JSON.parse(e.target.result);
                         console.log('JSON 数据:', jsonData);
-                        if (jsonData['iyuu_helper_server'] && jsonData['x-iyuu-helper']) {
+                        if (jsonData['iyuu_helper_server'] && jsonData['iyuu_helper_secret']) {
                             Api.setConfig(jsonData).then(() => {
                                 layer.msg('恢复成功', {icon: 1});
                             });

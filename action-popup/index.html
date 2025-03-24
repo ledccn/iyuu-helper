@@ -15,18 +15,18 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-on="createSiteTab"
-                        data-site="m-team">创建标签
-                </button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-orange" lay-on="reload">
-                    重载插件
-                </button>
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-blue" lay-on="getRequest">
                     拉取站点
                 </button>
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple"
                         lay-on="refreshAll">
                     刷新全部
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple"
+                        lay-on="openOptionsPage">扩展选项
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-orange" lay-on="reload">
+                    重载插件
                 </button>
                 <table class="layui-table" lay-size="sm" lay-even="true">
                     <colgroup>
@@ -52,6 +52,9 @@
                 </table>
             </div>
             <div class="layui-tab-item">
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-on="createSiteTab"
+                        data-site="m-team">创建标签
+                </button>
                 <form class="layui-hide">
                     <label for="upload_sites_json_file">选择文件:</label>
                     <input type="file" name="file" accept="application/json" id="upload_sites_json_file">
@@ -69,9 +72,6 @@
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple" lay-on="createTab">
                     爱语飞飞
                 </button>
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-purple"
-                        lay-on="openOptionsPage">扩展选项
-                </button>
                 <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-bg-red" lay-on="clear">
                     清理缓存
                 </button>
@@ -87,11 +87,11 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label" for="x-iyuu-helper">助手密钥</label>
+                        <label class="layui-form-label" for="iyuu_helper_secret">助手密钥</label>
                         <div class="layui-input-block">
-                            <input type="password" name="x-iyuu-helper" placeholder="请输入IYUU助手服务器密钥"
+                            <input type="password" name="iyuu_helper_secret" placeholder="请输入IYUU助手服务器密钥"
                                    autocomplete="off"
-                                   class="layui-input" id="x-iyuu-helper">
+                                   class="layui-input" id="iyuu_helper_secret">
                             <div class="layui-input-affix layui-input-suffix">
                                 <i class="layui-icon layui-icon-eye-invisible" id="showPassword"></i>
                             </div>
@@ -123,11 +123,6 @@
 
 <script src="/assets/layui/layui.js"></script>
 <script src="/assets/functions.js"></script>
-<script src="/assets/crypto-js-4.2.0/core.js"></script>
-<script src="/assets/crypto-js-4.2.0/crypto-js.js"></script>
-<script src="/assets/crypto-js-4.2.0/hmac.js"></script>
-<script src="/assets/crypto-js-4.2.0/aes.js"></script>
-<script src="/assets/crypto-js-4.2.0/hmac-md5.js"></script>
 <script src="popup.js" type="module"></script>
 <script src="setting.js" type="module"></script>
 <script src="table.js" type="module"></script>
