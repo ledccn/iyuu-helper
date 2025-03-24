@@ -18,6 +18,7 @@ layui.use(['layer', 'jquery', 'util', 'element', 'form'], function () {
             let state = status[site.site] || false;
             rows.push(`<tr>
                         <td>${index + 1}</td>
+                        <td>${site.sid}</td>
                         <td>${site.site}</td>
                         <td>${site.nickname}</td>
                         <td>
