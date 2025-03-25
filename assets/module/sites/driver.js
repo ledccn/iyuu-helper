@@ -1,5 +1,6 @@
 import Sites from '/assets/module/sites/sites.js';
 import Sessions from '/assets/module/sessions.js';
+import Request from "/assets/module/request.js";
 
 console.log('import assets/module/sites/driver.js', '自定义站点驱动类');
 export {
@@ -349,7 +350,22 @@ class DriverMTeam extends Sites {
      * @returns {Promise<*>}
      */
     async chainFieldsXApiKey() {
-        return 'x-api-key';
+        const config = this.getConfig()
+        const url = `${config.getProtocol()}${config.base_url}`
+        const auth = localStorage.getItem('auth');
+        const did = localStorage.getItem('did');
+        const visitorId = localStorage.getItem('visitorId');
+        const request = new Request(url, {
+            'authorization': auth,
+            'did': did,
+            'visitorid': visitorId,
+            'ts': Math.floor(Date.now() / 1000)
+        })
+        const result = await request.post('/api/apikey/getKeyList', '');
+        if (result) {
+            return result.data[0]['apiKey'];
+        }
+        throw new Error('无法获取到 x-api-key');
     }
 
     /**
@@ -357,6 +373,6 @@ class DriverMTeam extends Sites {
      * @returns {Promise<string>}
      */
     async chainFieldsPasskey() {
-        return 'Passkey';
+        return '';
     }
 }
