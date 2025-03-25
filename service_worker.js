@@ -129,7 +129,7 @@ async function createSiteTab(site, context) {
  */
 async function postSiteConfig(site, options) {
     const config = await Config.make(site);
-    const cookie = await Cookies.make(site).get();
+    const cookie = (await Cookies.make(site).get()) || '';
     const params = {
         sid: config.sid,
         site: site,
