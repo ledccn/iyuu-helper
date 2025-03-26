@@ -78,7 +78,9 @@ layui.use(['layer', 'element', 'form', 'util'], function () {
                         console.log('JSON 数据:', jsonData);
                         if (jsonData['iyuu_helper_server'] && jsonData['iyuu_helper_secret']) {
                             Api.setConfig(jsonData).then(() => {
-                                layer.msg('恢复成功', {icon: 1});
+                                layer.msg('恢复成功', {icon: 1}, () => {
+                                    location.reload();
+                                });
                             });
                         } else {
                             layer.alert('恢复失败，请检查文件格式', {
