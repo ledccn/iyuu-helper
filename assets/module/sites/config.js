@@ -175,6 +175,8 @@ class Config {
             case 'hdpost':
             case 'monikadesign':
                 return 'rss';
+            case 'rousi':
+                return 'account';
             default:
                 return 'usercp.php';
         }

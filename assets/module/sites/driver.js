@@ -13,6 +13,86 @@ export {
     DriverGreatposterwall,
     DriverHhanclub,
     DriverPtzone,
+    DriverRousi,
+}
+
+/**
+ * rousi（PeerGo 新架构，rousi.pro）
+ * - SPA 应用，无 NexusPHP 页面特征
+ * - uid：页面 /user/{username} 链接 → /api/v1/users/{username} 的 numeric_id
+ * - passkey：Tracker Passkey，页面不展示，从 .torrent 的 announce 地址提取
+ */
+class DriverRousi extends Sites {
+    /**
+     * 检查 Cookie 是否有效
+     * @returns {Promise<boolean>}
+     */
+    async isCookieValid() {
+        // 判断缓存，直接返回true
+        if (await this.isCookieStatus()) {
+            console.log('缓存的cookie状态为 true，直接返回 true');
+            return true;
+        }
+
+        // 检查当前页面路径，不等于则返回 false
+        if (location.href !== this.config.getFirstPageUrl()) {
+            console.log('当前页面路径不等于，直接返回 false');
+            return false;
+        }
+
+        // SPA 异步渲染，轮询等待用户链接出现（约 10 秒上限）
+        for (let i = 0; i < 20; i++) {
+            if (/\/user\/[a-z0-9_]+/i.test(document.body.innerHTML)) {
+                return true;
+            }
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        return false;
+    }
+
+    /**
+     * 获取用户的 user_id
+     * @returns {Promise<int>}
+     */
+    async chainFieldsUid() {
+        const m = document.body.innerHTML.match(/\/user\/([a-z0-9_]+)/i);
+        if (!m) {
+            throw new Error('无法获取到用户名链接');
+        }
+        const r = await fetch('/api/v1/users/' + m[1], {credentials: 'include'});
+        const j = await r.json();
+        if (j && j.numeric_id) {
+            return parseInt(j.numeric_id);
+        }
+        throw new Error('无法获取到 numeric_id');
+    }
+
+    /**
+     * 获取用户的 passkey
+     * - 从任意一个 .torrent 的 announce 地址提取 Tracker Passkey
+     * @returns {Promise<string>}
+     */
+    async chainFieldsPasskey() {
+        const lr = await fetch('/api/v1/torrents?page=1', {credentials: 'include'});
+        const lj = await lr.json();
+        const items = lj.items || [];
+        if (!items.length) {
+            throw new Error('种子列表为空，无法提取 passkey');
+        }
+        const r = await fetch('/api/v1/torrents/' + items[0].id + '/download', {credentials: 'include'});
+        const buf = await r.arrayBuffer();
+        const bytes = new Uint8Array(buf);
+        // announce 在 bencode 头部，前 4000 字节足够
+        let s = '';
+        for (let i = 0; i < Math.min(bytes.length, 4000); i++) {
+            s += String.fromCharCode(bytes[i]);
+        }
+        const m = s.match(/\/tracker\/([a-f0-9]{32})\/announce/);
+        if (m) {
+            return m[1];
+        }
+        throw new Error('无法从 announce 提取 passkey');
+    }
 }
 
 /**
