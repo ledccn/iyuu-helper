@@ -13,6 +13,10 @@ export {
     DriverGreatposterwall,
     DriverHhanclub,
     DriverPtzone,
+    DriverDmhy,
+    DriverOpencd,
+    DriverMonikadesign,
+    DriverDicmusic,
 }
 
 /**
@@ -374,5 +378,179 @@ class DriverMTeam extends Sites {
      */
     async chainFieldsPasskey() {
         return '';
+    }
+}
+
+/**
+ * dmhy（U2分享園@動漫花園，NexusPHP）
+ * - passkey 不展示明文，藏在 span.hidden-click 的 data-content 属性里
+ */
+class DriverDmhy extends Sites {
+    /**
+     * 获取用户的 passkey
+     * @returns {Promise<string>}
+     */
+    async chainFieldsPasskey() {
+        const els = document.querySelectorAll('[data-content]');
+        for (const el of els) {
+            const m = (el.getAttribute('data-content') || '').match(/[a-f0-9]{32}/i);
+            if (m) {
+                return m[0];
+            }
+        }
+        throw new Error('无法获取到密钥');
+    }
+}
+
+/**
+ * OpenCD（NexusPHP）
+ * - 密钥关键字为「密匙」而非「密钥」
+ */
+class DriverOpencd extends Sites {
+    /**
+     * 获取用户的 passkey
+     * @returns {Promise<string>}
+     */
+    async chainFieldsPasskey() {
+        return getFieldsPasskey('密匙');
+    }
+}
+
+/**
+ * MonikaDesign（UNIT3D）
+ * - uid：/users/{username}/uploads
+ * - torrent_pass / rsskey：/rss/{id}.{key}
+ * - passkey：/users/{uid} 页「Passkey」折叠块内的 .text-monospace
+ */
+class DriverMonikadesign extends Sites {
+    /**
+     * 检查 Cookie 是否有效
+     * @returns {Promise<boolean>}
+     */
+    async isCookieValid() {
+        if (await this.isCookieStatus()) {
+            console.log('缓存的cookie状态为 true，直接返回 true');
+            return true;
+        }
+
+        if (location.href !== this.config.getFirstPageUrl()) {
+            console.log('当前页面路径不等于，直接返回 false');
+            return false;
+        }
+
+        return document.body.innerHTML.includes('/uploads');
+    }
+
+    /**
+     * 获取用户的 user_id
+     * @returns {Promise<string|int>}
+     */
+    async chainFieldsUid() {
+        const regex = /users\/(.+)\/uploads$/;
+        const user_id = getLinkHrefByDocument(document.body, regex, 1);
+        if (user_id) {
+            await Sessions.make(this.getConfig().site).setNextPage(location.origin + '/users/' + user_id);
+            return user_id;
+        }
+        throw new Error('无法获取到 user_id');
+    }
+
+    /**
+     * 获取用户的 torrent_pass
+     * @returns {Promise<string>}
+     */
+    async chainFieldsTorrentPass() {
+        const regex = /rss\/\d+.([A-Za-z0-9]+)/;
+        const value = getLinkHrefByDocument(document.body, regex, 1);
+        if (value) {
+            return value;
+        }
+        throw new Error('无法获取到 torrent_pass');
+    }
+
+    /**
+     * 获取用户的 rsskey
+     * @returns {Promise<string>}
+     */
+    async chainFieldsRsskey() {
+        return this.chainFieldsTorrentPass();
+    }
+
+    /**
+     * 获取用户的 passkey
+     * @returns {Promise<string>}
+     */
+    async chainFieldsPasskey() {
+        const currentHref = await Sessions.make(this.getConfig().site).getNextPage();
+        if (!currentHref) {
+            throw new Error('Session NextPage为空');
+        }
+        if (location.href !== currentHref) {
+            location.href = currentHref;
+        }
+
+        const label = Array.from(document.querySelectorAll('td')).find(td => td.textContent.trim() === 'Passkey');
+        const span = label ? label.closest('tr').querySelector('.text-monospace') : null;
+        if (span && span.textContent.trim()) {
+            return span.textContent.trim();
+        }
+        throw new Error('无法获取到 Passkey');
+    }
+}
+
+/**
+ * DIC Music（Gazelle）
+ * - authkey / torrent_pass / passkey 藏在 <link rel="alternate"> 的 RSS 订阅地址里
+ */
+class DriverDicmusic extends Sites {
+    /**
+     * 检查 Cookie 是否有效
+     * @returns {Promise<boolean>}
+     */
+    async isCookieValid() {
+        if (await this.isCookieStatus()) {
+            console.log('缓存的cookie状态为 true，直接返回 true');
+            return true;
+        }
+
+        const base = this.config.getProtocolHost();
+        if (!location.href.startsWith(base + '/user.php')) {
+            console.log('当前页面路径不等于，直接返回 false');
+            return false;
+        }
+
+        return document.documentElement.innerHTML.includes('passkey=');
+    }
+
+    /**
+     * 获取用户的 authkey
+     * @returns {Promise<string>}
+     */
+    async chainFieldsAuthkey() {
+        const m = document.documentElement.innerHTML.match(/authkey=([a-zA-Z0-9]+)/);
+        if (m) {
+            return m[1];
+        }
+        throw new Error('无法获取到 authkey');
+    }
+
+    /**
+     * 获取用户的 torrent_pass
+     * @returns {Promise<string>}
+     */
+    async chainFieldsTorrentPass() {
+        const m = document.documentElement.innerHTML.match(/passkey=([a-zA-Z0-9]+)/);
+        if (m) {
+            return m[1];
+        }
+        throw new Error('无法获取到 torrent_pass');
+    }
+
+    /**
+     * 获取用户的 passkey
+     * @returns {Promise<string>}
+     */
+    async chainFieldsPasskey() {
+        return this.chainFieldsTorrentPass();
     }
 }

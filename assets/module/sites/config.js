@@ -172,6 +172,8 @@ class Config {
                 return 'usercp?tab=laboratory';
             case 'greatposterwall':
                 return 'user.php?action=notify';
+            case 'dicmusic':
+                return 'user.php';
             case 'hdpost':
             case 'monikadesign':
                 return 'rss';
